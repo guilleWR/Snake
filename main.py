@@ -19,23 +19,29 @@ pos_y = 100
 
 snake = Snake(COLOR_SNAKE, head_size, pos_x, pos_y)
 
+MOVE_EVENT = pygame.event.custom_type()
+pygame.time.set_timer(MOVE_EVENT, 150)
+
+new_snake_direction = "none"
+
 running = True
 while running:
-    print(pygame.time.get_ticks())
-    #snake.move_down()
+   
     for event in pygame.event.get():
+        if event.type == MOVE_EVENT:
+            snake.move_towards(new_snake_direction)
         if event.type == pygame.QUIT:
             running = False
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                snake.move_down()
+                new_snake_direction = "down"
             if event.key == pygame.K_UP:
-                snake.move_up()
+                new_snake_direction = "up"
             if event.key == pygame.K_LEFT:
-                snake.move_left()
+                new_snake_direction = "left"
             if event.key == pygame.K_RIGHT:
-                snake.move_right()
+                new_snake_direction = "right"
 
         
     screen.fill(COLOR_BACKGROUND)
