@@ -14,7 +14,7 @@ class Snake:
         return self.color
 
     # Posible mejora, no crear un Rect nuevo cada vez
-    def get_snake_rect(self) -> Rect:
+    def get_rect(self) -> Rect:
         return Rect(self.pos_x, self.pos_y, self.head_size, self.head_size)
 
 
@@ -25,6 +25,7 @@ class Snake:
                 self._go_to(self.current_direction)
             else:
                 self._go_to(new_direction)
+            running = False
         
         elif new_direction == "left":
             if self.current_direction == "right":
@@ -77,3 +78,12 @@ class Snake:
 
     def get_current(self):
             return self.current_direction
+
+    def get_pos_x(self) -> int:
+        return self.pos_x
+
+    def get_pos_y(self) -> int:
+            return self.pos_y
+
+    def get_head_size(self) -> float:
+        return self.head_size
