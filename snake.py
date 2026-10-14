@@ -7,8 +7,18 @@ class Snake:
         self.head_size = head_size
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.size = 0
         self.current_direction = "none"
 
+        self.current_position = (pos_x, pos_y)
+        self.previous_position = self.current_position
+
+        self.childs = []
+
+        #self.tail = self
+
+    def get_childs(self) -> list[Snake]:
+        return self.childs
 
     def get_color(self) -> tuple[int,int,int]:
         return self.color
@@ -83,7 +93,34 @@ class Snake:
         return self.pos_x
 
     def get_pos_y(self) -> int:
-            return self.pos_y
+        return self.pos_y
 
     def get_head_size(self) -> float:
         return self.head_size
+
+    def get_head_cords(self) -> str:
+        x = str(self.pos_x)
+        y = str(self.pos_y)
+        return "(" + x + "," + y + ")" 
+
+    def get_tail(self) -> Snake:
+        return self
+
+    def get_current_position(self) -> tuple[float,float]:
+        return self.current_position
+
+    def get_previous_position(self) -> tuple[float,float]:
+        return self.previous_position
+
+    def set_previous_position(self, x: float, y: float) -> None:
+        self.previous_position = (x,y)
+        self.pos_x = x
+        self.pos_y = y
+
+    def set_current_position(self, x: float, y: float) -> None:
+        self.current_position = (x,y)
+        self.pos_x = x
+        self.pos_y = y
+
+    def add_child(self, child: Snake) -> None:
+        self.childs.append(child)
