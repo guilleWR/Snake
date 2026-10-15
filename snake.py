@@ -1,5 +1,16 @@
 from pygame import Rect
-#from node import Node
+
+class Node:
+    def __init__(self, child: Snake, dad: Snake):
+        self.child = child
+        self.dad = dad
+
+    def get_child(self) -> Snake:
+        return self.child
+
+    def get_dad(self) -> Snake:
+        return self.dad
+
 
 class Snake:
 
@@ -14,11 +25,11 @@ class Snake:
         self.current_position = (pos_x, pos_y)
         self.previous_position = self.current_position
 
-        self.childs = []
+        self.childs = [Node]
 
         #self.tail = self
 
-    def get_childs(self) -> list[Snake]:
+    def get_childs(self) -> list[Node]:
         return self.childs
 
     def get_color(self) -> tuple[int,int,int]:
@@ -123,5 +134,19 @@ class Snake:
         self.pos_x = x
         self.pos_y = y
 
+
+    def set_child_list(self, initial_childs: list[Node]):
+        self.childs = initial_childs
+
+
+    # Queda por modificar para crear un Node
     def add_child(self, child: Snake) -> None:
+        #1 create new snake
+        new_snake = self(self.color, self.head_size, 0, 0) # 0,0 ?
+
+        #2 create new node
+        new_node = Node(new_snake,)
+
+        #3 modify dad for this new node (dad = last one from child list) 
+
         self.childs.append(child)

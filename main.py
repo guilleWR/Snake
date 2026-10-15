@@ -1,6 +1,7 @@
 import pygame
 from pygame import Rect
-from snake import Snake
+from snake import Snake, Node
+
 
 pygame.init()
 
@@ -22,12 +23,14 @@ def move_and_update_position(snake: Snake, direcion: str) -> None:
     # Update Body
 
     
-    for child in snake.get_childs():
-        # obtain dad from child...
+    for node in snake.get_childs():
+        child = node.get_child()
+        dad = node.get_dad()
 
-        # antes cuando esté la funcion create_child, se hara un snake nuevo para que no falle esta parte
         child.set_previous_position(child.get_pos_x(), child.get_pos_y()) 
-        tp = snake.get_previous_position()
+
+        tp = dad.get_previous_position()
+
         child.set_current_position(tp[0], tp[1])
         
 
@@ -36,8 +39,16 @@ def move_and_update_position(snake: Snake, direcion: str) -> None:
     print("\n-------------------------------")
 
 def init_child_list(snake: Snake):
-    snake_child = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
-    snake.add_child(snake_child)
+    # create 2 child snakes and put them into childs
+    snake_child1 = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
+    snake_child2 = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
+
+    # Create 2 nodes with previous dad configuration
+    node1 = Node(snake_child1, snake)
+    node2 = Node(snake_child2, snake_child1)
+
+    # Add nodes directly into list
+    snake.set_child_list([node1,node2])
 
 def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -87,7 +98,8 @@ def main():
         pygame.draw.rect(screen, snake.get_color(), snake.get_rect())
 
         
-        for child in snake.get_childs():
+        for node in snake.get_childs():
+            child = node.get_child()
             pygame.draw.rect(screen, child.get_color(), child.get_rect())
 
         pygame.display.update()
