@@ -8,6 +8,9 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+COLOR_SNAKE = (57, 255, 20)
+HEAD_SIZE = 20
+
 def _snake_is_outside(snake: Snake) -> bool:
     snake_rect = snake.get_rect()
     return (snake_rect.left < 0) or (snake_rect.right > SCREEN_WIDTH) or (snake_rect.top < 0) or (snake_rect.bottom > SCREEN_HEIGHT)
@@ -22,7 +25,7 @@ def move_and_update_position(snake: Snake, direcion: str) -> None:
     for child in snake.get_childs():
         # obtain dad from child...
 
-        
+        # antes cuando esté la funcion create_child, se hara un snake nuevo para que no falle esta parte
         child.set_previous_position(child.get_pos_x(), child.get_pos_y()) 
         tp = snake.get_previous_position()
         child.set_current_position(tp[0], tp[1])
@@ -31,7 +34,10 @@ def move_and_update_position(snake: Snake, direcion: str) -> None:
     print("Current: " + str(snake.get_current_position()) + " --- " + "Previous: " + str(snake.get_previous_position()) + "\n")
     print("Current child: " + str(child.get_current_position()) + " --- " + "Previous child: " + str(child.get_previous_position()))
     print("\n-------------------------------")
-        
+
+def init_child_list(snake: Snake):
+    snake_child = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
+    snake.add_child(snake_child)
 
 def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -39,14 +45,11 @@ def main():
     COLOR_BACKGROUND = (128,128,128)
 
     # Snake info
-    COLOR_SNAKE = (57, 255, 20)
-    head_size = 20
     pos_x = 0
     pos_y = 0
-    snake = Snake(COLOR_SNAKE, head_size, pos_x, pos_y)
+    snake = Snake(COLOR_SNAKE, HEAD_SIZE, pos_x, pos_y)
 
-    snake_child = Snake(COLOR_SNAKE, head_size, 0, 0)
-    snake.add_child(snake_child)
+    init_child_list(snake)
 
     MOVE_EVENT = pygame.event.custom_type()
     pygame.time.set_timer(MOVE_EVENT, 150)

@@ -1,4 +1,5 @@
 from pygame import Rect
+#from node import Node
 
 class Snake:
 
