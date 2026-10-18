@@ -140,13 +140,12 @@ class Snake:
 
 
     # Queda por modificar para crear un Node
-    def add_child(self, child: Snake) -> None:
+    #@staticmethod
+    def add_child(self, dad: Snake) -> None:
         #1 create new snake
-        new_snake = self(self.color, self.head_size, 0, 0) # 0,0 ?
+        new_snake = Snake(self.color, self.head_size, -self.head_size, -self.head_size) 
 
         #2 create new node
-        new_node = Node(new_snake,)
+        new_node = Node(new_snake, dad)
 
-        #3 modify dad for this new node (dad = last one from child list) 
-
-        self.childs.append(child)
+        self.childs.append(new_node)

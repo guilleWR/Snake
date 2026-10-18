@@ -1,13 +1,16 @@
 import pygame
 from pygame import Rect
 from snake import Snake, Node
-
+from food import Food
 
 pygame.init()
 
 # Window
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+
+TOTAL_SQUARES_X = SCREEN_WIDTH / 10
+TOTAL_SQUARES_Y = SCREEN_HEIGHT / 10
 
 COLOR_SNAKE = (57, 255, 20)
 HEAD_SIZE = 20
@@ -60,10 +63,15 @@ def main():
     pos_y = 0
     snake = Snake(COLOR_SNAKE, HEAD_SIZE, pos_x, pos_y)
 
+    apple = Food(HEAD_SIZE, 0, 0)
+
     init_child_list(snake)
 
     MOVE_EVENT = pygame.event.custom_type()
     pygame.time.set_timer(MOVE_EVENT, 150)
+
+    ADD_CHILD_EVENT = pygame.event.custom_type()
+    pygame.time.set_timer(ADD_CHILD_EVENT, 3000)
 
     new_snake_direction = "none"
 
@@ -81,6 +89,12 @@ def main():
 
             if event.type == pygame.QUIT:
                 running = False
+
+            '''
+            if event.type == ADD_CHILD_EVENT:
+                last_node = snake.get_childs()[-1]
+                future_dad = last_node.get_child()
+                snake.add_child(future_dad) '''
             
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
@@ -97,6 +111,7 @@ def main():
 
         pygame.draw.rect(screen, snake.get_color(), snake.get_rect())
 
+        pygame.draw.rect(screen, apple.get_color(), apple.get_rect())
         
         for node in snake.get_childs():
             child = node.get_child()
