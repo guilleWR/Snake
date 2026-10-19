@@ -1,4 +1,5 @@
 from pygame import Rect
+from food import Food
 
 class Node:
     def __init__(self, child: Snake, dad: Snake):
@@ -149,3 +150,15 @@ class Snake:
         new_node = Node(new_snake, dad)
 
         self.childs.append(new_node)
+
+        self.size = self.size + 1
+
+
+    def show_coords(self) -> str:
+        return "(" + str(self.pos_x) + "," + str(self.pos_y) + ")"
+
+    def set_size(self, x: int) -> None:
+        self.size = x
+
+    def get_size(self) -> int:
+        return self.size
