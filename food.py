@@ -3,24 +3,19 @@ import random
 
 class Food:
 
-    # Recibir maximos de la pantalla X, Y para calcular posicion aleatoria
-
-    # Posible implementacion de interfaz
-
     def __init__(self, head_size: float, x: int, y: int):
-        self.color = (255, 0, 0)
+        self.color = (255, 0, 0) # RED
         self.head_size = head_size
         self.max_x = x
         self.max_y = y
         self.pos_x = self.random_even(x)
         self.pos_y = self.random_even(y)
 
-
     def random_even(self, max_size) -> int:
         is_even = False
         while not is_even: 
             res = random.randint(0, max_size - self.head_size)
-            if res % 20 == 0:
+            if res % self.head_size == 0:
                 return res
 
     def get_rect(self) -> Rect:

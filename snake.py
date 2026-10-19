@@ -1,5 +1,4 @@
 from pygame import Rect
-from food import Food
 
 class Node:
     def __init__(self, child: Snake, dad: Snake):
@@ -22,13 +21,10 @@ class Snake:
         self.pos_y = pos_y
         self.size = 0
         self.current_direction = "none"
-
         self.current_position = (pos_x, pos_y)
         self.previous_position = self.current_position
-
         self.childs = [Node]
 
-        #self.tail = self
 
     def get_childs(self) -> list[Node]:
         return self.childs
@@ -42,14 +38,12 @@ class Snake:
 
 
     def move_towards(self, new_direction: str):  
-              
         if new_direction == "right":
             if self.current_direction == "left":
                 self._go_to(self.current_direction)
             else:
                 self._go_to(new_direction)
-            running = False
-        
+
         elif new_direction == "left":
             if self.current_direction == "right":
                 self._go_to(self.current_direction)
@@ -98,7 +92,6 @@ class Snake:
         self.pos_x -= self.head_size
     # ----------------------------------
 
-
     def get_current(self):
             return self.current_direction
 
@@ -135,24 +128,14 @@ class Snake:
         self.pos_x = x
         self.pos_y = y
 
-
     def set_child_list(self, initial_childs: list[Node]):
         self.childs = initial_childs
 
-
-    # Queda por modificar para crear un Node
-    #@staticmethod
     def add_child(self, dad: Snake) -> None:
-        #1 create new snake
         new_snake = Snake(self.color, self.head_size, -self.head_size, -self.head_size) 
-
-        #2 create new node
         new_node = Node(new_snake, dad)
-
         self.childs.append(new_node)
-
         self.size = self.size + 1
-
 
     def show_coords(self) -> str:
         return "(" + str(self.pos_x) + "," + str(self.pos_y) + ")"

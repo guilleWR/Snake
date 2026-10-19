@@ -115,11 +115,11 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            
+            '''
             if event.type == ADD_CHILD_EVENT:
                 last_node = snake.get_childs()[-1]
                 future_dad = last_node.get_child()
-                snake.add_child(future_dad) 
+                snake.add_child(future_dad) '''
             
             
             if event.type == pygame.KEYDOWN:
