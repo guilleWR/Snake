@@ -11,6 +11,7 @@ SCREEN_HEIGHT = 600
 
 HEAD_SIZE = 20
 COLOR_SNAKE = (57, 255, 20)
+COLOR_BACKGROUND = (128,128,128)
 
 TOTAL_SQUARES_X = SCREEN_WIDTH / HEAD_SIZE
 TOTAL_SQUARES_Y = SCREEN_HEIGHT / HEAD_SIZE
@@ -29,41 +30,28 @@ def move_and_update_position(snake: Snake, direcion: str) -> None:
     snake.set_previous_position(snake.get_pos_x(), snake.get_pos_y())
     snake.move_towards(direcion)
     snake.set_current_position(snake.get_pos_x(), snake.get_pos_y())
-    # Update Body
-
+    
     for node in snake.get_childs():
         child = node.get_child()
         dad = node.get_dad()
 
         child.set_previous_position(child.get_pos_x(), child.get_pos_y()) 
-
         tp = dad.get_previous_position()
-
         child.set_current_position(tp[0], tp[1])
         
-'''
-    print("Current: " + str(snake.get_current_position()) + " --- " + "Previous: " + str(snake.get_previous_position()) + "\n")
-    print("Current child: " + str(child.get_current_position()) + " --- " + "Previous child: " + str(child.get_previous_position()))
-    print("\n-------------------------------")
-'''
 def init_child_list(snake: Snake):
-    # create 2 child snakes and put them into childs
     snake_child1 = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
     snake_child2 = Snake(COLOR_SNAKE, HEAD_SIZE, 0, 0)
 
-    # Create 2 nodes with previous dad configuration
     node1 = Node(snake_child1, snake)
     node2 = Node(snake_child2, snake_child1)
 
-    # Add nodes directly into list
     snake.set_child_list([node1,node2])
-
     snake.set_size(3) #cambiar por calcular lista
 
 def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    COLOR_BACKGROUND = (128,128,128)
 
     # Snake info
     pos_x = 0
@@ -85,42 +73,23 @@ def main():
 
     running = True
     while running:
-
         # falta que no spawnee en el cuerpo
         
         for event in pygame.event.get():
             if event.type == MOVE_EVENT:
-                print("snake: " + snake.show_coords())
-                print("apple: " + apple.show_coords())
-                print("\n\n")
-                #Ojo esto no me vale para los hijos porque tienen que moverse solo hacia el previous de su padre  (nada con directions)
                 move_and_update_position(snake, new_snake_direction)
-
-                res = abs(snake.get_rect().center[0] - apple.get_rect().center[0])
-
-                if snake.get_rect().center == apple.get_rect().center:
-                    print("si señor")
-                    apple.updateCoordinates()
-                    last_node = snake.get_childs()[-1]
-                    future_dad = last_node.get_child()
-                    snake.add_child(future_dad) 
-                    print(apple.show_coords())
-                    
-                #else: 
-                    #print("no")
 
                 if _snake_is_outside(snake) or _snake_touches_tail(snake):
                     running = False
 
+                if snake.get_rect().center == apple.get_rect().center:
+                    apple.updateCoordinates()
+                    last_node = snake.get_childs()[-1]
+                    future_dad = last_node.get_child()
+                    snake.add_child(future_dad) 
+
             if event.type == pygame.QUIT:
                 running = False
-
-            '''
-            if event.type == ADD_CHILD_EVENT:
-                last_node = snake.get_childs()[-1]
-                future_dad = last_node.get_child()
-                snake.add_child(future_dad) '''
-            
             
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
@@ -131,12 +100,9 @@ def main():
                     new_snake_direction = "left"
                 if event.key == pygame.K_RIGHT:
                     new_snake_direction = "right"
-
             
         screen.fill(COLOR_BACKGROUND)
-
         pygame.draw.rect(screen, snake.get_color(), snake.get_rect())
-
         pygame.draw.rect(screen, apple.get_color(), apple.get_rect())
         
         for node in snake.get_childs():
@@ -144,7 +110,6 @@ def main():
             pygame.draw.rect(screen, child.get_color(), child.get_rect())
 
         pygame.display.update()
-
         clock.tick(60)  
 
     pygame.quit()

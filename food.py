@@ -6,7 +6,7 @@ class Food:
     def __init__(self, head_size: float, x: int, y: int):
         self.color = (255, 0, 0) # RED
         self.head_size = head_size
-        self.max_x = x
+        self.max_x = x 
         self.max_y = y
         self.pos_x = self.random_even(x)
         self.pos_y = self.random_even(y)

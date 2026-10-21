@@ -132,7 +132,7 @@ class Snake:
         self.childs = initial_childs
 
     def add_child(self, dad: Snake) -> None:
-        new_snake = Snake(self.color, self.head_size, -self.head_size, -self.head_size) 
+        new_snake = Snake(self.color, self.head_size, dad.get_previous_position()[0], dad.get_previous_position()[1]) 
         new_node = Node(new_snake, dad)
         self.childs.append(new_node)
         self.size = self.size + 1
