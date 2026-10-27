@@ -5,16 +5,15 @@ from food import Food
 
 pygame.init()
 
-# Window
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 HEAD_SIZE = 20
 COLOR_SNAKE = (57, 255, 20)
 COLOR_BACKGROUND = (128,128,128)
 
-TOTAL_SQUARES_X = SCREEN_WIDTH / HEAD_SIZE
-TOTAL_SQUARES_Y = SCREEN_HEIGHT / HEAD_SIZE
+text_font = pygame.font.SysFont("Arial", 15)
 
 def _snake_is_outside(snake: Snake) -> bool:
     snake_rect = snake.get_rect()
@@ -49,41 +48,42 @@ def init_child_list(snake: Snake):
     snake.set_child_list([node1,node2])
     snake.set_size(3) #cambiar por calcular lista
 
-def main():
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    clock = pygame.time.Clock()
+def draw_score(score, font, color, x, y):
+    text = "Score: " + str(score)
+    img = font.render(text, True, color)
+    screen.blit(img, (x,y))
 
+def main():
+    score = 0
+    clock = pygame.time.Clock()
+    
     # Snake info
     pos_x = 0
     pos_y = 0
     snake = Snake(COLOR_SNAKE, HEAD_SIZE, pos_x, pos_y)
 
     apple = Food(HEAD_SIZE, int(SCREEN_WIDTH), int(SCREEN_HEIGHT))
-    print("manzana cords:" +  str(apple.get_pos_x()) + "," + str(apple.get_pos_y()))
-
     init_child_list(snake)
 
     MOVE_EVENT = pygame.event.custom_type()
     pygame.time.set_timer(MOVE_EVENT, 100)
-
-    ADD_CHILD_EVENT = pygame.event.custom_type()
-    pygame.time.set_timer(ADD_CHILD_EVENT, 3000)
-
+    
     new_snake_direction = "none"
-
     running = True
     while running:
-        # falta que no spawnee en el cuerpo
         
         for event in pygame.event.get():
             if event.type == MOVE_EVENT:
                 move_and_update_position(snake, new_snake_direction)
+                screen.fill(COLOR_BACKGROUND)
+                draw_score(score, text_font, (0,0,0), 720, 10)
 
                 if _snake_is_outside(snake) or _snake_touches_tail(snake):
                     running = False
 
                 if snake.get_rect().center == apple.get_rect().center:
                     apple.updateCoordinates()
+                    score = score + 1
                     last_node = snake.get_childs()[-1]
                     future_dad = last_node.get_child()
                     snake.add_child(future_dad) 
@@ -101,7 +101,6 @@ def main():
                 if event.key == pygame.K_RIGHT:
                     new_snake_direction = "right"
             
-        screen.fill(COLOR_BACKGROUND)
         pygame.draw.rect(screen, snake.get_color(), snake.get_rect())
         pygame.draw.rect(screen, apple.get_color(), apple.get_rect())
         
@@ -109,7 +108,8 @@ def main():
             child = node.get_child()
             pygame.draw.rect(screen, child.get_color(), child.get_rect())
 
-        pygame.display.update()
+        #pygame.display.update()
+        pygame.display.flip()
         clock.tick(60)  
 
     pygame.quit()
