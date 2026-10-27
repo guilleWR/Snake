@@ -126,7 +126,7 @@ class Snake:
     def set_current_position(self, x: float, y: float) -> None:
         self.pos_x = x
         self.pos_y = y
-        self.previous_position = (x,y)
+        self.current_position = (x,y)
 
     def set_child_list(self, initial_childs: list[Node]):
         self.childs = initial_childs
